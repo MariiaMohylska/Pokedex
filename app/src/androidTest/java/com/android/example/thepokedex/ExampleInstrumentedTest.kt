@@ -1,4 +1,4 @@
-package com.android.example.Thepokedex
+package com.android.example.thepokedex
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

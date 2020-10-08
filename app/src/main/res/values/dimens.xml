@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="item_margin">8dp</dimen>
+    <dimen name="min_image_size">95dp</dimen>
+    <dimen name="pokemon_name_size">16sp</dimen>>
+</resources>

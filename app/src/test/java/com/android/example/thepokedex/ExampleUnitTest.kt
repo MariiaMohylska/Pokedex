@@ -1,4 +1,4 @@
-package com.android.example.Thepokedex
+package com.android.example.thepokedex
 
 import org.junit.Test
 
