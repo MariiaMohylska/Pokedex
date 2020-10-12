@@ -1,4 +1,4 @@
-package com.android.example.thepokedex
+package com.android.example.thepokedex.presentation.adapter
 
 
 import android.util.Log
@@ -7,11 +7,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.android.example.thepokedex.domain.Pokemon
 import com.android.example.thepokedex.databinding.ItemPokemonBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class PokemonAdapter : ListAdapter<Pokemon,PokemonAdapter.ViewHolder>(PokemonDiffCallback()){
+class PokemonAdapter : ListAdapter<Pokemon, PokemonAdapter.ViewHolder>(
+    PokemonDiffCallback()
+){
 
     class ViewHolder private constructor(val binding: ItemPokemonBinding):RecyclerView.ViewHolder(binding.root){
 
@@ -32,17 +35,21 @@ class PokemonAdapter : ListAdapter<Pokemon,PokemonAdapter.ViewHolder>(PokemonDif
         }
 
         companion object{
-            fun from(parent: ViewGroup):ViewHolder{
-                return  ViewHolder( ItemPokemonBinding.inflate(
-                    LayoutInflater.from(parent.context),
-                    parent, false
-                ))
+            fun from(parent: ViewGroup): ViewHolder {
+                return ViewHolder(
+                    ItemPokemonBinding.inflate(
+                        LayoutInflater.from(parent.context),
+                        parent, false
+                    )
+                )
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
+        return ViewHolder.from(
+            parent
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
