@@ -1,5 +1,6 @@
 package com.android.example.thepokedex.domain
 
 interface PokemonRepository {
-    fun getPokemonList() :List<Pokemon>
+    suspend fun getPokemonList():List<Pokemon>
+    suspend fun getPokemonById(id: Int): PokemonDetails
 }

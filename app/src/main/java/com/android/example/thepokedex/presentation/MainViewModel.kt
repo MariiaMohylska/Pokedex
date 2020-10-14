@@ -7,6 +7,9 @@ import com.android.example.thepokedex.data.PokemonRepositoryImpl
 import com.android.example.thepokedex.domain.Pokemon
 import com.android.example.thepokedex.domain.PokemonRepository
 import android.os.Handler
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import java.lang.Exception
 import kotlin.random.Random
 
 class MainViewModel: ViewModel() {
@@ -28,20 +31,28 @@ class MainViewModel: ViewModel() {
     fun loadData(){
         _isLoading.value = true
         _isError.value = false
-        _content.value = emptyList()
+        _content.value = null
 
         Handler().postDelayed({
             if(Random.nextInt() % 10 == 0){
                 _isLoading.value = false
                 _isError.value = true
-                _content.value = emptyList()
+                _content.value = null
             }else{
-                val data = repository.getPokemonList()
                 _isError.value = false
                 _isLoading.value = false
-                _content.postValue(data)
+                viewModelScope.launch {
+                    try {
+                        val data = repository.getPokemonList()
+                        _content.postValue(data)
+                    }catch (e: Exception){
+                        _isError.value = true
+                    }
+                }
+
+
             }
-        }, 300)
+        }, 600)
     }
 
 }

@@ -8,7 +8,6 @@ import androidx.lifecycle.Observer
 import com.android.example.thepokedex.R
 import com.android.example.thepokedex.domain.Pokemon
 import com.android.example.thepokedex.presentation.adapter.PokemonAdapter
-import com.android.example.thepokedex.domain.pokemonList
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -38,19 +37,14 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.content.observe(this, Observer { data ->
-            recycler_view.visibility = if(data.isNotEmpty()){
+            recycler_view.visibility = if(data != null){
                 View.VISIBLE
             } else {
                 View.GONE
             }
-
-            setData(data)
+            adapter.submitList(viewModel.content.value)
         })
         viewModel.loadData()
     }
 
-    fun setData(data: List<Pokemon>){
-        adapter.submitList(pokemonList)
-
-    }
 }
