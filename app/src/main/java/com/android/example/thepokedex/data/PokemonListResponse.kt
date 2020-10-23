@@ -14,8 +14,8 @@ data class PokemonPartialInfo(
     val url: String
 )
 
-val PokemonPartialInfo.id: String
-get() = url.toUri().lastPathSegment ?:""
+val PokemonPartialInfo.id: Int
+get() =  url.toUri().lastPathSegment?.toInt() ?:1
 
 val PokemonPartialInfo.imageUrl: String
 get() =  "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/$id.png"

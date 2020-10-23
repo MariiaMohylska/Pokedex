@@ -1,13 +1,16 @@
 package com.android.example.thepokedex.data
 
+import com.android.example.thepokedex.database.*
 import com.android.example.thepokedex.domain.Pokemon
 import com.android.example.thepokedex.domain.PokemonDetails
 import com.android.example.thepokedex.domain.PokemonRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.lang.Exception
 
-class PokemonRepositoryImpl : PokemonRepository {
+class PokemonRepositoryImpl(private val database: PokemonDatabase) : PokemonRepository {
+
+    val pokemons= database.pokemonDao.getPokemons()
+
     override suspend fun getPokemonList(): List<Pokemon>{
         lateinit var pokemonList: List<Pokemon>
             withContext(Dispatchers.IO) {
@@ -24,11 +27,10 @@ class PokemonRepositoryImpl : PokemonRepository {
                     throw e
                 }
             }
-
         return pokemonList
     }
 
-    override suspend fun getPokemonById(id: Int) : PokemonDetails {
+     override suspend fun getPokemonById(id: Int) : PokemonDetails {
         lateinit var pokemonInfo: PokemonDetails
         withContext(Dispatchers.IO){
             try {
@@ -47,5 +49,28 @@ class PokemonRepositoryImpl : PokemonRepository {
             }
         }
         return pokemonInfo
+    }
+
+    override suspend fun refreshPokemonData() {
+        withContext(Dispatchers.IO){
+            val pokemonList = getPokemonList()
+                .toPokemonDetailsList()
+            database.pokemonDao.insertAll(pokemonList.toPokemonDBList())
+        }
+    }
+
+    fun List<Pokemon>.toPokemonDetailsList(): List<PokemonDetails> {
+        return this.map { Pokemon->
+            runBlocking {
+                this@PokemonRepositoryImpl.getPokemonById(Pokemon.id)
+            }
+        }
+    }
+
+}
+
+fun List<PokemonDetails>.toPokemonList(): List<Pokemon>{
+    return this.map { PokemonDetails ->
+        Pokemon(PokemonDetails.id, PokemonDetails.name, PokemonDetails.imageUrl)
     }
 }

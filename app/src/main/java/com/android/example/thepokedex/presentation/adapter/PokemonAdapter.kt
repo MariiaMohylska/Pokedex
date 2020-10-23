@@ -31,6 +31,7 @@ class PokemonAdapter : ListAdapter<Pokemon, PokemonAdapter.ViewHolder>(
                         Log.d("Adapter", "Error", e)
                     }
                 })
+
             binding.executePendingBindings()
         }
 
