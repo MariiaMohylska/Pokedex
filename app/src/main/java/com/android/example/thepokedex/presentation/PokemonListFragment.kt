@@ -1,11 +1,13 @@
 package com.android.example.thepokedex.presentation
 
 import android.os.Bundle
+import android.text.Layout
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.android.example.thepokedex.R
 import com.android.example.thepokedex.presentation.adapter.PokemonAdapter
 import kotlinx.android.synthetic.main.pokemon_list_fragment.*
@@ -23,6 +25,12 @@ class PokemonListFragment() : Fragment(R.layout.pokemon_list_fragment) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = adapter
 
+        adapter.pokemonOnClickListener = object : PokemonAdapter.PokemonOnClickListener {
+            override fun onClicked(id: Int) {
+                val action =  PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(id)
+                findNavController().navigate(action)
+            }
+        }
         viewModel.eventNetworkError.observe(viewLifecycleOwner, Observer {isNetworkErrorShown ->
             if(isNetworkErrorShown) onNetworkError()
         })

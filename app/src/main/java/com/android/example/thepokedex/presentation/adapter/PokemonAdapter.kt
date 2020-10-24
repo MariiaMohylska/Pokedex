@@ -3,12 +3,15 @@ package com.android.example.thepokedex.presentation.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.android.example.thepokedex.R
 import com.android.example.thepokedex.domain.Pokemon
-import com.android.example.thepokedex.databinding.ItemPokemonBinding
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -16,13 +19,26 @@ class PokemonAdapter : ListAdapter<Pokemon, PokemonAdapter.ViewHolder>(
     PokemonDiffCallback()
 ){
 
-    class ViewHolder private constructor(val binding: ItemPokemonBinding):RecyclerView.ViewHolder(binding.root){
+    var pokemonOnClickListener: PokemonOnClickListener? = null
 
-        fun bind(pokemon: Pokemon){
-            binding.pokemon = pokemon
+    interface PokemonOnClickListener {
+        fun onClicked(id: Int)
+    }
+
+    class ViewHolder private constructor(view: View):RecyclerView.ViewHolder(view){
+        private val name = view.findViewById<TextView>(R.id.pokemon_name)
+        private val image = view.findViewById<ImageView>(R.id.pokemon_img)
+        fun bind(pokemon: Pokemon,
+                 pokemonOnClickListener: PokemonOnClickListener?
+        ){
+            itemView.setOnClickListener{
+                pokemonOnClickListener?.onClicked(pokemon.id)
+            }
+
+            name.text = pokemon.name
             Picasso.get()
                 .load(pokemon.imgUrl)
-                .into(binding.pokemonImg, object: Callback {
+                .into(image, object: Callback {
                     override fun onSuccess() {
                         Log.d("Adapter", "Loaded")
                     }
@@ -32,16 +48,12 @@ class PokemonAdapter : ListAdapter<Pokemon, PokemonAdapter.ViewHolder>(
                     }
                 })
 
-            binding.executePendingBindings()
         }
 
         companion object{
             fun from(parent: ViewGroup): ViewHolder {
                 return ViewHolder(
-                    ItemPokemonBinding.inflate(
-                        LayoutInflater.from(parent.context),
-                        parent, false
-                    )
+                    LayoutInflater.from(parent.context).inflate(R.layout.item_pokemon, parent, false)
                 )
             }
         }
@@ -54,7 +66,9 @@ class PokemonAdapter : ListAdapter<Pokemon, PokemonAdapter.ViewHolder>(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position)
+            , pokemonOnClickListener
+        )
     }
 
 }

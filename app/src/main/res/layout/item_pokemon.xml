@@ -1,17 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="pokemon"
-            type="com.android.example.thepokedex.domain.Pokemon" />
-    </data>
-
-
 <androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_margin="@dimen/item_margin"
@@ -35,7 +28,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
-        android:text="@{pokemon.name}"
         android:textColor="@color/pokemon_name_color"
         android:textSize="@dimen/pokemon_name_size"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,4 +36,3 @@
         app:layout_constraintTop_toBottomOf="@+id/pokemon_img"
         tools:text="Pickachu" />
 </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>

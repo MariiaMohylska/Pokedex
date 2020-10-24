@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#673AB7">
+    android:background="@android:color/white">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/pokemon_img"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="150dp"
+        android:minHeight="150dp"
         android:contentDescription="@string/image_pokemon_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,22 +20,22 @@
         tools:srcCompat="@drawable/ic_launcher_foreground" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/pokemon_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/pokemon_img"
         tools:layout_editor_absoluteX="0dp"
         tools:text="HELLO IT'S MY NAME" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/pokemon_ability"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/pokemon_name"
         tools:layout_editor_absoluteX="0dp"
         tools:text="AND THIS IS MY ABILITIES. Look how I can" />
 
