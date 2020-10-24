@@ -1,24 +1,23 @@
-package com.android.example.thepokedex.presentation
+package com.android.example.thepokedex.presentation.list
 
 import android.os.Bundle
-import android.text.Layout
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.android.example.thepokedex.App
 import com.android.example.thepokedex.R
 import com.android.example.thepokedex.presentation.adapter.PokemonAdapter
 import kotlinx.android.synthetic.main.pokemon_list_fragment.*
 
 class PokemonListFragment() : Fragment(R.layout.pokemon_list_fragment) {
     private val adapter = PokemonAdapter()
+
+
     private val viewModel : PokemonListViewModel by lazy{
-        val activity = requireNotNull(this.activity){
-            "You can only access the viewModel after onActivityCreated()"
-        }
-        ViewModelProvider(this, PokemonListViewModel.Factory(activity.application))
+        ViewModelProvider(this, PokemonListViewModel.Factory(App.INSTANCE.appComponent.repository()))
             .get(PokemonListViewModel::class.java)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -27,7 +26,10 @@ class PokemonListFragment() : Fragment(R.layout.pokemon_list_fragment) {
 
         adapter.pokemonOnClickListener = object : PokemonAdapter.PokemonOnClickListener {
             override fun onClicked(id: Int) {
-                val action =  PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(id)
+                val action =
+                    PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(
+                        id
+                    )
                 findNavController().navigate(action)
             }
         }

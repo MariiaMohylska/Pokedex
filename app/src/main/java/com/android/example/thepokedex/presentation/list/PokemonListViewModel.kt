@@ -1,19 +1,14 @@
-package com.android.example.thepokedex.presentation
+package com.android.example.thepokedex.presentation.list
 
-import android.app.Application
-import com.android.example.thepokedex.data.PokemonRepositoryImpl
 import com.android.example.thepokedex.domain.Pokemon
 import androidx.lifecycle.*
-import com.android.example.thepokedex.database.getDatabase
 import com.android.example.thepokedex.database.toPokemonList
+import com.android.example.thepokedex.domain.PokemonRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-class PokemonListViewModel(application: Application): ViewModel() {
-    private val repository : PokemonRepositoryImpl = PokemonRepositoryImpl(getDatabase(application))
-
-
+class PokemonListViewModel(private val repository: PokemonRepository): ViewModel() {
     private val _eventNetworkError = MutableLiveData<Boolean>(false)
     val eventNetworkError : LiveData<Boolean>
         get() = _eventNetworkError
@@ -51,11 +46,11 @@ class PokemonListViewModel(application: Application): ViewModel() {
     }
 
 
-    class Factory(val application: Application) : ViewModelProvider.Factory{
+    class Factory(val repository: PokemonRepository) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PokemonListViewModel::class.java)) {
                 @Suppress("UNCHECKED_CAST")
-                return PokemonListViewModel(application) as T
+                return PokemonListViewModel(repository) as T
             }
             throw IllegalArgumentException("Unable to construct viewmodel")
         }

@@ -7,9 +7,9 @@ import com.android.example.thepokedex.domain.PokemonRepository
 import kotlinx.coroutines.*
 import java.lang.Exception
 
-class PokemonRepositoryImpl(private val database: PokemonDatabase) : PokemonRepository {
+class PokemonRepositoryImpl(private val database: PokemonDatabase, private val api: PokedexApiService) : PokemonRepository {
 
-    val pokemons= database.pokemonDao.getPokemons()
+    override val pokemons= database.pokemonDao.getPokemons()
 
     override suspend fun getPokemonList(): List<Pokemon>{
         lateinit var pokemonList: List<Pokemon>
