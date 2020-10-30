@@ -3,7 +3,6 @@ package com.android.example.thepokedex.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.android.example.thepokedex.domain.Pokemon
 import com.android.example.thepokedex.domain.PokemonDetails
 
 @Entity
@@ -26,9 +25,4 @@ fun  List<PokemonDB>.toPokemonDetailsList(): List<PokemonDetails>{
     }
 }
 
-fun  List<PokemonDB>.toPokemonList(): List<Pokemon>{
-    return this.map{
-        Pokemon(it.id, it.name, it.imageUrl)
-    }
-}
 

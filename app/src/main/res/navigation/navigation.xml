@@ -22,5 +22,8 @@
         <action
             android:id="@+id/action_pokemonDetailsFragment_to_pokemonListFragment"
             app:destination="@id/pokemonListFragment" />
+        <argument
+            android:name="COLOR"
+            app:argType="reference" />
     </fragment>
 </navigation>

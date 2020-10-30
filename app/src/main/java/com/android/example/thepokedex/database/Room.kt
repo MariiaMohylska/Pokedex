@@ -10,7 +10,7 @@ interface PokemonDao{
     fun getPokemons(): LiveData<List<PokemonDB>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll( videos: List<PokemonDB>)
+    fun insertAll( pokemons: List<PokemonDB>)
 }
 
 @Database(entities = [PokemonDB::class], version = 1, exportSchema = false)

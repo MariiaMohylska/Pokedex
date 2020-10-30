@@ -80,4 +80,12 @@ dependencies {
     //Dagger
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     implementation "com.google.dagger:dagger:$dagger_version"
+
+    //Gif
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.3'
+
+    implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:1.0.0'
+
+    implementation 'com.android.support:palette-v7:30.0.0'
+
 }

@@ -1,6 +1,7 @@
-package com.android.example.thepokedex
+package com.android.example.thepokedex.presentation.di
 
 import android.app.Application
+import android.content.Context
 import com.android.example.thepokedex.database.PokemonDatabase
 import com.android.example.thepokedex.domain.PokemonRepository
 import com.android.example.thepokedex.presentation.list.PokemonListFragment
@@ -14,4 +15,5 @@ interface AppComponent {
     fun repository(): PokemonRepository
     fun application(): Application
     fun database(): PokemonDatabase
+    fun context(): Context
 }

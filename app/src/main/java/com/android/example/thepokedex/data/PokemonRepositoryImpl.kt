@@ -1,76 +1,107 @@
 package com.android.example.thepokedex.data
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Log
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.palette.graphics.Palette
+import com.android.example.thepokedex.R
 import com.android.example.thepokedex.database.*
 import com.android.example.thepokedex.domain.Pokemon
 import com.android.example.thepokedex.domain.PokemonDetails
+import com.android.example.thepokedex.domain.PokemonFullInfo
 import com.android.example.thepokedex.domain.PokemonRepository
 import kotlinx.coroutines.*
+import java.io.IOException
 import java.lang.Exception
+import java.net.URL
 
-class PokemonRepositoryImpl(private val database: PokemonDatabase, private val api: PokedexApiService) : PokemonRepository {
+class PokemonRepositoryImpl(
+    private val context: Context,
+    private val database: PokemonDatabase,
+    private val api: PokedexApiService
+) : PokemonRepository {
 
-    override val pokemons= database.pokemonDao.getPokemons()
-
-    override suspend fun getPokemonList(): List<Pokemon>{
-        lateinit var pokemonList: List<Pokemon>
-            withContext(Dispatchers.IO) {
-                try {
-                    pokemonList = PokemonApi.retrofitService.getPokemonList()
-                        .results.map { PokemonPartialInfo ->
-                            Pokemon(
-                                PokemonPartialInfo.id,
-                                PokemonPartialInfo.name,
-                                PokemonPartialInfo.imageUrl
-                            )
-                        }
-                } catch (e: Exception) {
-                    throw e
-                }
-            }
-        return pokemonList
-    }
-
-     override suspend fun getPokemonById(id: Int) : PokemonDetails {
-        lateinit var pokemonInfo: PokemonDetails
-        withContext(Dispatchers.IO){
-            try {
-                val pokemonParsialInfo = PokemonApi.retrofitService.getPokemonInfo(id)
-                val abilities = pokemonParsialInfo.abilities.map {
-                    it.ability.name
-                }
-                pokemonInfo = PokemonDetails(
-                    pokemonParsialInfo.id,
-                    pokemonParsialInfo.name,
-                    pokemonParsialInfo.imageUrl,
-                    abilities)
-
-            }catch (e: Exception){
-                throw e
-            }
+    override val pokemons: LiveData<List<PokemonDetails>> =
+        Transformations.map(database.pokemonDao.getPokemons()) {
+            it.toPokemonDetailsList()
         }
-        return pokemonInfo
+
+    override suspend fun getPokemonList(): List<Pokemon> = api.getPokemonList()
+        .results.map { PokemonPartialInfo ->
+            Pokemon(
+                PokemonPartialInfo.id,
+                PokemonPartialInfo.name,
+                PokemonPartialInfo.imageUrl
+            )
+        }
+
+
+    override suspend fun getPokemonById(id: Int): PokemonFullInfo {
+
+        try {
+            val pokemonParsialInfo = api.getPokemonInfo(id)
+            val abilities = pokemonParsialInfo.abilities.map {
+                it.ability.name
+            }
+            val height = pokemonParsialInfo.height
+            val weight = pokemonParsialInfo.weight
+            val types = pokemonParsialInfo.types.map {
+                it.type.name
+            }
+
+            val pokemonInfo = PokemonFullInfo(
+                pokemonParsialInfo.id,
+                pokemonParsialInfo.name,
+                pokemonParsialInfo.imageUrl,
+                abilities,
+                height,
+                weight,
+                types
+            )
+            return pokemonInfo
+
+        } catch (e: Exception) {
+            Log.i("getPokemonById", e.toString())
+            throw e
+        }
     }
 
     override suspend fun refreshPokemonData() {
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
+
             val pokemonList = getPokemonList()
-                .toPokemonDetailsList()
+                .toPokemonFullInfoList()
+                .toPokemonDetails()
             database.pokemonDao.insertAll(pokemonList.toPokemonDBList())
         }
     }
 
-    fun List<Pokemon>.toPokemonDetailsList(): List<PokemonDetails> {
-        return this.map { Pokemon->
-            runBlocking {
-                this@PokemonRepositoryImpl.getPokemonById(Pokemon.id)
-            }
+
+     suspend fun List<Pokemon>.toPokemonFullInfoList(): List<PokemonFullInfo> {
+
+        return this.map { pokemon ->
+
+                this@PokemonRepositoryImpl.getPokemonById(pokemon.id)
+
         }
     }
 
+    fun List<PokemonFullInfo>.toPokemonDetails(): List<PokemonDetails> {
+        return this.map { pokemon ->
+            PokemonDetails(
+                pokemon.id,
+                pokemon.name,
+                pokemon.imageUrl,
+                pokemon.abilities
+            )
+        }
+    }
+
+
+
 }
 
-fun List<PokemonDetails>.toPokemonList(): List<Pokemon>{
-    return this.map { PokemonDetails ->
-        Pokemon(PokemonDetails.id, PokemonDetails.name, PokemonDetails.imageUrl)
-    }
-}

@@ -2,7 +2,7 @@ package com.android.example.thepokedex.presentation.list
 
 import com.android.example.thepokedex.domain.Pokemon
 import androidx.lifecycle.*
-import com.android.example.thepokedex.database.toPokemonList
+import com.android.example.thepokedex.domain.PokemonDetails
 import com.android.example.thepokedex.domain.PokemonRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,34 +17,46 @@ class PokemonListViewModel(private val repository: PokemonRepository): ViewModel
     val isNetworkErrorShown: LiveData<Boolean>
         get() = _isNetworkErrorShown
 
-    private val _content = Transformations.map(repository.pokemons){
-        it.toPokemonList()
-    }
-    val content : LiveData<List<Pokemon>>
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean>
+        get() = _isLoading
+
+    private val _content = repository.pokemons
+    val content : LiveData<List<PokemonDetails>>
             get() = _content
 
-    init {
-        loadData()
-    }
-
+init {
+    showLoading()
+}
     fun loadData(){
-    viewModelScope.launch {
-            try {
-                delay(10)
-                repository.refreshPokemonData()
-                _eventNetworkError.value = false
-                _isNetworkErrorShown.value = false
-            }catch (networkError: IOException){
-                if(_content.value.isNullOrEmpty())
-                    _eventNetworkError.value = true
+//            _content.value = repository.pokemons.value
+            if(_content.value.isNullOrEmpty()) {
+            viewModelScope.launch {
+                try {
+                    delay(100)
+                    repository.refreshPokemonData()
+                    loadingDone()
+                    _eventNetworkError.value = false
+                    _isNetworkErrorShown.value = false
+                } catch (networkError: IOException) {
+                    if (_content.value.isNullOrEmpty())
+                        _eventNetworkError.value = true
+                }
             }
-         }
+        }
     }
 
     fun onNetworkErrorShown() {
         _isNetworkErrorShown.value = true
     }
 
+    fun showLoading(){
+        _isLoading.value = true
+    }
+
+    fun loadingDone(){
+        _isLoading.value = false
+    }
 
     class Factory(val repository: PokemonRepository) : ViewModelProvider.Factory{
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

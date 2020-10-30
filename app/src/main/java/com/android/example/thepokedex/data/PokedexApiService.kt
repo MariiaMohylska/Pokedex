@@ -13,7 +13,7 @@ interface PokedexApiService{
 
     @GET("pokemon")
     suspend fun getPokemonList(
-        @Query("limit") limit: Int = 200,
+        @Query("limit") limit: Int = 80,
         @Query("offset") offset: Int = 0
     ): PokemonListResponse
 
@@ -21,6 +21,7 @@ interface PokedexApiService{
     suspend fun getPokemonInfo(
         @Path("name") name: Int
     ): PokemonInfoResponse
+
 }
 
 

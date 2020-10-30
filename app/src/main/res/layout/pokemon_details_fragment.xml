@@ -4,39 +4,146 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@android:color/black">
 
-    <ImageView
-        android:id="@+id/pokemon_img"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minWidth="150dp"
-        android:minHeight="150dp"
-        android:contentDescription="@string/image_pokemon_description"
+    <ProgressBar
+        android:id="@+id/loadingView"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:foregroundGravity="center"
+        android:indeterminateDrawable="@drawable/spinner"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/pokemon_name"
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imgCard"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/pokemon_img"
-        tools:layout_editor_absoluteX="0dp"
-        tools:text="HELLO IT'S MY NAME" />
+        app:cardCornerRadius="40dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/pokemon_ability"
+        <ImageView
+            android:id="@+id/pokemon_img"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:minHeight="200dp"
+            android:paddingTop="40dp"
+            android:paddingBottom="30dp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/infoView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textAlignment="center"
-        app:layout_constraintTop_toBottomOf="@+id/pokemon_name"
-        tools:layout_editor_absoluteX="0dp"
-        tools:text="AND THIS IS MY ABILITIES. Look how I can" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgCard">
+
+        <TextView
+            android:id="@+id/pokemon_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="PIKACHU" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pokemon_types"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pokemon_name" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/innerConstraint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pokemon_types">
+
+            <TextView
+                android:id="@+id/pokemon_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="120dp"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                android:textSize="24sp"
+                app:layout_constraintTop_toTopOf="@+id/innerConstraint"
+                tools:text="220 KG" />
+
+            <TextView
+                android:id="@+id/pokemon_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginStart="120dp"
+                android:gravity="center"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textColor="@android:color/white"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/innerConstraint"
+                tools:text="170 M" />
+
+            <TextView
+                android:id="@+id/weightTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Weight"
+                android:textAlignment="center"
+                android:textColor="#A5A5A5"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/pokemon_weight"
+                app:layout_constraintStart_toStartOf="@+id/pokemon_weight"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_weight" />
+
+            <TextView
+                android:id="@+id/heightTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#A5A5A5"
+                android:textSize="18sp"
+                android:text="Height"
+                android:textAlignment="center"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="@+id/pokemon_height"
+                app:layout_constraintStart_toStartOf="@+id/pokemon_height"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_height" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pokemon_abilities"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/innerConstraint" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

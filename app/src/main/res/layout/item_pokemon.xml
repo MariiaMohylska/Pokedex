@@ -4,35 +4,85 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    android:layout_margin="@dimen/item_margin"
-    android:background="@color/color_item_background">
-
-    <ImageView
-        android:id="@+id/pokemon_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/image_pokemon_description"
-        android:minWidth="@dimen/min_image_size"
-        android:minHeight="@dimen/min_image_size"
+     android:layout_width="match_parent"
+        android:layout_margin="@dimen/item_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_launcher_foreground" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/pokemon_name"
-        android:layout_width="wrap_content"
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:id="@+id/easyFlipView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/roboto"
-        android:textColor="@color/pokemon_name_color"
-        android:textSize="@dimen/pokemon_name_size"
+        android:layout_centerInParent="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pokemon_img"
-        tools:text="Pickachu" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/back_card"
+            android:layout_width="match_parent"
+            android:background="@color/color_item_background"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/abilities"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:gravity="center"
+                android:padding="6dp"
+                android:textAlignment="center"
+                android:textColor="@color/launch_color"
+                app:layout_constraintBottom_toTopOf="@+id/back_card"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/back_card"
+                tools:text="HEllo" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/front_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_item_background"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:id="@+id/pokemon_img"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:contentDescription="@string/image_pokemon_description"
+                android:minWidth="@dimen/min_image_size"
+                android:minHeight="@dimen/min_image_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@drawable/ic_launcher_foreground" />
+
+            <TextView
+                android:id="@+id/pokemon_name"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/pokemon_name_color"
+                android:textSize="@dimen/pokemon_name_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/pokemon_img"
+                tools:text="Pickachu" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

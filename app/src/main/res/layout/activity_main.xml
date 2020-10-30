@@ -8,8 +8,10 @@
     android:background="@color/color_background"
     tools:context=".presentation.MainActivity">
 
-<!--        Raplace with FragmentContainerView-->
-        <fragment
+
+
+        <androidx.fragment.app.FragmentContainerView
+            android:visibility="visible"
             android:id="@+id/navHostFragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"

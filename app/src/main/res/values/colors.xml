@@ -4,4 +4,32 @@
     <color name="color_background">#000000</color>
     <color name="color_item_background">#FFFFFF</color>
     <color name="pokemon_name_color">#BE000000</color>
+    <color name="launch_color">#000000</color>
+
+    <color name="normal">#E6B0AA </color>
+    <color name="fighting">#873600 </color>
+    <color name= "flying"> #3498DB</color>
+    <color name="poison">#9B59B6</color>
+    <color name="ground">#9C640C</color>
+    <color name="rock">#626567 </color>
+    <color name="bug">#239B56</color>
+    <color name="ghost">#706B69</color>
+    <color name="steel">#7F8C8D</color>
+    <color name="fire"> #E74C3C</color>
+    <color name="water">#2874A6</color>
+    <color name="grass">#52BE80 </color>
+    <color name="electric">#6AD4D1</color>
+    <color name="psychic">#D4AC0D </color>
+    <color name="ice">#85C1E9</color>
+    <color name="dragon">#D35400 </color>
+    <color name="dark">#34495E </color>
+    <color name="fairy">#D46AB4</color>
+    <color name="unknown">#2471A3</color>
+    <color name="shadow">#616A6B </color>
+
+    <color name="insomnia">#8E44AD </color>
+    <color name="color_change">#BA6192</color>
+    <color name="immunity">#76448A </color>
+    <color name="ability">#000000</color>
+
 </resources>

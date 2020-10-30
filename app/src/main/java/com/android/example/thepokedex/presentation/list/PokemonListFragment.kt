@@ -10,6 +10,8 @@ import androidx.navigation.fragment.findNavController
 import com.android.example.thepokedex.App
 import com.android.example.thepokedex.R
 import com.android.example.thepokedex.presentation.adapter.PokemonAdapter
+import kotlinx.android.synthetic.main.item_pokemon.*
+import kotlinx.android.synthetic.main.pokemon_details_fragment.*
 import kotlinx.android.synthetic.main.pokemon_list_fragment.*
 
 class PokemonListFragment() : Fragment(R.layout.pokemon_list_fragment) {
@@ -24,34 +26,60 @@ class PokemonListFragment() : Fragment(R.layout.pokemon_list_fragment) {
         super.onViewCreated(view, savedInstanceState)
         recycler_view.adapter = adapter
 
-        adapter.pokemonOnClickListener = object : PokemonAdapter.PokemonOnClickListener {
-            override fun onClicked(id: Int) {
-                val action =
-                    PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(
-                        id
-                    )
-                findNavController().navigate(action)
-            }
-        }
+
+        viewModel.loadData()
         viewModel.eventNetworkError.observe(viewLifecycleOwner, Observer {isNetworkErrorShown ->
             if(isNetworkErrorShown) onNetworkError()
         })
-
         viewModel.content.observe(viewLifecycleOwner, Observer { data ->
-            recycler_view.visibility = if(data != null){
-                View.VISIBLE
+            if(data != null){
+                recycler_view.visibility = View.VISIBLE
+                loading_view.visibility = View.GONE
             } else {
-                View.GONE
+                recycler_view.visibility = View.GONE
+                loading_view.visibility = View.VISIBLE
             }
-            adapter.submitList(viewModel.content.value)
+            adapter.submitList(data)
         })
-        viewModel.loadData()
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer { loading ->
+            if(loading) {
+                loading_view.visibility = View.VISIBLE
+                recycler_view.visibility = View.GONE
+            }else {
+                loading_view.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+            }
+
+        })
+
+        adapter.pokemonOnClickListener = object : PokemonAdapter.PokemonOnClickListener {
+            override fun onClicked(id: Int, color: Int) {
+                val action =
+                    PokemonListFragmentDirections.actionPokemonListFragmentToPokemonDetailsFragment(
+                        id,
+                        color
+                    )
+                findNavController().navigate(action)
+
+            }
+        }
     }
+
 
     fun onNetworkError(){
         if(!viewModel.isNetworkErrorShown.value!!){
             Toast.makeText(activity, "Network Error", Toast.LENGTH_LONG).show()
             viewModel.onNetworkErrorShown()
+        }
+    }
+
+    companion object{
+        var isFront: Boolean = true
+
+        @JvmStatic
+        fun front(front: Boolean){
+            isFront = front
+
         }
     }
 
